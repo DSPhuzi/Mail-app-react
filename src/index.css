@@ -1,0 +1,13 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities"; 
+#root{
+    margin: 0px;
+    padding: 0px;
+}
+.logo{
+    height: 106px;
+}
+body {
+    background-color: transparent;
+}
