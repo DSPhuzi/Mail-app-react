@@ -5,17 +5,16 @@ import { useState } from 'react';
 
 function App() {
   const [isSignUpMode, setIsSignUpMode] = useState(true);
-
   // Define text based on the mode
   const headingText = isSignUpMode ? "Sign Up" : "Login";
-  const mainButtonText = isSignUpMode ? "New here? Create your account" : "Already have an account? Login";
+  const mainButtonText = isSignUpMode ? "Already have an account? Login" : "  New here? Create your account";
   const altButtonText = isSignUpMode ? "Sign Up with Google" : "Login with Google";
 
   return (
     <div className="container">
-      <button onClick={() => setIsSignUpMode(!isSignUpMode)}>
+      {/* <button onClick={() => setIsSignUpMode(!isSignUpMode)}>
         {isSignUpMode ? "Switch to Login" : "Switch to Sign Up"}
-      </button>
+      </button> */}
 
       {/* Pass dynamic props to Login component */}
       <Login 
@@ -25,13 +24,13 @@ function App() {
         altButtonText={altButtonText} 
         setIsSignUpMode={setIsSignUpMode} // Ensure to pass this prop to handle toggle in Login component
       />
-            <Dark_login
+            {/* <Dark_login
         isSignUpMode={isSignUpMode} 
         headingText={headingText} 
         mainButtonText={mainButtonText} 
         altButtonText={altButtonText} 
         setIsSignUpMode={setIsSignUpMode} // Ensure to pass this prop to handle toggle in Login component
-      />
+      /> */}
     </div>
   );
 }
