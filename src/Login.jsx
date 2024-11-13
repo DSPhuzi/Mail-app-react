@@ -56,8 +56,9 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
 
   return (
     <>
-      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
-        <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+<div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center" style={{ width: '100vw' }}>
+
+        <div className="w-full sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl bg-white shadow sm:rounded-lg flex justify-center flex-1">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div>
               <img
