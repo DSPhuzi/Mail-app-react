@@ -23,7 +23,7 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
       return;
     }
 
-    const endpoint = isSignUpMode ? "http://localhost:8000/signup/" : "http://localhost:8000/login/";
+    const endpoint = isSignUpMode ? "http://localhost:8000/register" : "http://localhost:8000/login";
     const formData = {
       email: email,
       password: password,
@@ -35,7 +35,10 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
         credentials: "include", // Allows sending cookies for session-based authentication
       });
 
