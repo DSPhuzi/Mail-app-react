@@ -7,7 +7,7 @@ function Google({ headingText }) {
   const handleLoginSuccess = async (tokenResponse) => {
     try {
       // Send Google access token to the backend
-      const response = await axios.post('http://localhost:8000/auth/google/', {
+      const response = await axios.post('http://localhost:8000/accounts/google/login/callback/', {
         token: tokenResponse.access_token,
       });
 
