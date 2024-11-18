@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Google from './Google';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
 function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, altButtonText }) {
   // State for form fields
   const [email, setEmail] = useState('');
@@ -7,6 +9,8 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  const navigate = useNavigate();  // Initialize navigate
 
   // Event handler to toggle the sign up and login mode
   const handleToggleMode = (e) => {
@@ -35,10 +39,7 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+        body: JSON.stringify(formData),
         credentials: "include", // Allows sending cookies for session-based authentication
       });
 
@@ -46,7 +47,7 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
       if (response.ok) {
         setSuccess("Login successful");
         setError(null);
-        // Redirect or perform further actions as needed
+        navigate('/home');  // Navigate to the home page on successful login
       } else {
         setError(data.error || "An error occurred");
         setSuccess(null);
@@ -59,8 +60,7 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
 
   return (
     <>
-<div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center" style={{ width: '100vw' }}>
-
+      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center" style={{ width: '100vw' }}>
         <div className="w-full sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl bg-white shadow sm:rounded-lg flex justify-center flex-1">
           <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
             <div>
@@ -71,11 +71,9 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
               />
             </div>
             <div className="mt-12 flex flex-col items-center">
-              <h1 className="text-2xl xl:text-3xl font-extrabold">
-                {headingText}
-              </h1>
+              <h1 className="text-2xl xl:text-3xl font-extrabold">{headingText}</h1>
               <div className="w-full flex-1 mt-8">
-              <Google headingText={headingText} />
+                <Google headingText={headingText} />
 
                 <div className="mt-4 mb-12 border-b text-center">
                   <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
@@ -112,8 +110,18 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
                         required
                       />
                     )}
-                    <button type="submit" className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
-                      <svg className="w-6 h-6 -ml-2" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <button
+                      type="submit"
+                      className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                    >
+                      <svg
+                        className="w-6 h-6 -ml-2"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
                         <circle cx="8.5" cy="7" r="4" />
                         <path d="M20 8v6M23 11h-6" />
@@ -124,7 +132,11 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
                   {error && <p className="text-red-500 mt-3">{error}</p>}
                   {success && <p className="text-green-500 mt-3">{success}</p>}
                   <p className="mt-6 text-xs text-gray-600 text-center">
-                    <a href="#" className="border-b border-gray-500 border-dotted" onClick={handleToggleMode}>
+                    <a
+                      href="#"
+                      className="border-b border-gray-500 border-dotted"
+                      onClick={handleToggleMode}
+                    >
                       {mainButtonText}
                     </a>
                   </p>
@@ -140,8 +152,7 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
                 backgroundImage:
                   'url("https://storage.googleapis.com/devitary-image-host.appspot.com/15848031292911696601-undraw_designer_life_w96d.svg")',
               }}
-            >
-            </div>
+            ></div>
           </div>
         </div>
       </div>
