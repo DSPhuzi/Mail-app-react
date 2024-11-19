@@ -2,7 +2,7 @@ import React from 'react'
 
 function Email() {
   return (
-    <div className="flex justify-between items-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 w-full">
+    <div className="flex justify-between items-center p-4 bg-gray-100 rounded-lg hover:bg-gray-200 w-full" >
     <div className="flex items-center space-x-4 w-full">
       <img 
         src="https://www.w3schools.com/w3images/avatar2.png" 

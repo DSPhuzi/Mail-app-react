@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';  // Import Route and Routes
 import Login from './Login';
 import Dark_login from './Dark_login'; // You can keep this commented out or use it as needed
 import Home from './Home'; // You need to create this Home component (you can do a simple placeholder)
+import Compose from './Compose'; // Import the Compose component
 import { useState } from 'react';
 
 function App() {
@@ -27,8 +28,11 @@ function App() {
           />} 
         />
         
-        {/* You can add more routes like for the Home component */}
-        <Route path="/home" element={<Home />} />  {/* Route to Home component */}
+        {/* Route to Home component */}
+        <Route path="/home" element={<Home />} />  
+
+        {/* Route to Compose Email component */}
+        <Route path="/compose" element={<Compose />} />  {/* Route to Compose component */}
       </Routes>
     </div>
   );

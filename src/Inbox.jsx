@@ -1,25 +1,29 @@
 import React from 'react';
-import Email from './Email'
+import { useNavigate } from 'react-router-dom';  // Import useNavigate hook
+import Email from './Email';
+
 function Inbox() {
+  const navigate = useNavigate();  // Initialize the useNavigate hook
+
+  // Function to handle the click event and navigate to /compose
+  const handleComposeClick = () => {
+    navigate('/compose');  // Navigate to the /compose route
+    console.log('clicked');
+  };
+
   return (
-    <div 
-      className="relative bg-white rounded-lg shadow-lg p-6"
-      style={{ zIndex: -100 }} // Explicitly set z-index to a lower value
-    >
+    <div className="relative bg-white rounded-lg shadow-lg p-6">
       <div className="space-y-4">
         {/* Email items */}
-       <Email></Email>
+        <Email />
         {/* Additional email items */}
-       
-       
-      
-
-        
       </div>
 
       {/* Compose Email Button */}
       <button 
+        onClick={handleComposeClick} 
         className="fixed bottom-6 right-6 bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-full shadow-lg flex items-center justify-center focus:outline-none"
+        style={{ zIndex: 100 }}  // Ensure the button is on top of other elements
         aria-label="Compose Email"
       >
         <svg 
