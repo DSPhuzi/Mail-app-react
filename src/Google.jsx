@@ -1,8 +1,11 @@
 import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function Google({ headingText }) {
+  const navigate = useNavigate(); // Initialize useNavigate
+
   // Handle login success
   const handleLoginSuccess = async (tokenResponse) => {
     try {
@@ -15,6 +18,7 @@ function Google({ headingText }) {
       console.log('Response from backend:', response.data);
       localStorage.setItem('authToken', response.data.token); // Save token to localStorage
       alert(`${headingText} Successful!`);
+      navigate('/home'); // Navigate to the home page after success
     } catch (error) {
       console.error('Error during authentication:', error);
       alert('An error occurred. Please try again.');
