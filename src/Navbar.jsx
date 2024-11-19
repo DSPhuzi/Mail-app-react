@@ -60,8 +60,8 @@ function Navbar({ toggleSidebar }) {
               alt="Profile"
               className="w-10 h-10 rounded-full border border-white"
               onError={(e) => {
-                e.target.src = 'default-profile-pic-url.jpg'; // Fallback to a default image if loading fails
-                console.error('Failed to load profile picture:', e.target.src);
+                console.error('Failed to load profile picture. Using fallback:', e.target.src);
+                e.target.src = 'https://via.placeholder.com/150?text=Profile'; // Use a reliable placeholder fallback
               }}
             />
           ) : (
