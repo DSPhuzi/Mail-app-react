@@ -13,10 +13,24 @@ function Google({ headingText }) {
       const response = await axios.post('http://localhost:8000/accounts/google/login/callback/', {
         token: tokenResponse.access_token,
       });
-
-      // Handle backend response
+  
+      // Log the full response to ensure we're getting the expected data
       console.log('Response from backend:', response.data);
-      localStorage.setItem('authToken', response.data.token); // Save token to localStorage
+  
+      // Check if the user object and pfp are available in the response
+      if (response.data && response.data.user && response.data.user.pfp) {
+        // Save profile picture to localStorage
+        localStorage.setItem('profilePic', response.data.user.pfp);
+  
+        // Save other necessary data to localStorage (e.g., authToken)
+        localStorage.setItem('authToken', response.data.access); // Assuming access token is returned as 'access'
+  
+        console.log('Profile picture saved to localStorage:', response.data.user.pfp);
+      } else {
+        console.log('No profile picture in the response.');
+      }
+  
+      // Show success message and navigate
       alert(`${headingText} Successful!`);
       navigate('/home'); // Navigate to the home page after success
     } catch (error) {
@@ -24,7 +38,9 @@ function Google({ headingText }) {
       alert('An error occurred. Please try again.');
     }
   };
-
+  
+  
+  
   // Handle login error
   const handleLoginError = (error) => {
     console.error('Google Login failed:', error);
