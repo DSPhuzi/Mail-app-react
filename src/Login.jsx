@@ -44,9 +44,13 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
       });
 
       const data = await response.json();
-    
       if (response.ok) {
         console.log(data);
+
+        // Save the JWT token to localStorage
+        localStorage.setItem('authToken', data.access); // Save the access token
+        localStorage.setItem('refreshToken', data.refresh); // Optionally, save the refresh token
+
         setSuccess("Login successful");
         setError(null);
         navigate('/home');  // Navigate to the home page on successful login
