@@ -6,7 +6,7 @@ function Navbar({ toggleSidebar }) {
   useEffect(() => {
     // Retrieve the profile picture from localStorage
     const storedProfilePic = localStorage.getItem('profilePic');
-
+    
     console.log('Retrieved profile picture from localStorage:', storedProfilePic); // Debugging log
 
     if (storedProfilePic) {
@@ -17,7 +17,7 @@ function Navbar({ toggleSidebar }) {
   }, []);
 
   return (
-    <nav className="bg-gray-800 fixed w-full top-0 left-0 z-50 shadow-md">
+    <nav className="bg-indigo-500 fixed w-full top-0 left-0 z-50 shadow-md">
       <div className="mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo (left) */}
         <div className="text-white text-xl font-semibold flex items-center">
@@ -48,7 +48,7 @@ function Navbar({ toggleSidebar }) {
           <input
             type="text"
             placeholder="Search..."
-            className="w-full lg:w-1/3 py-2 px-4 rounded-full bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full lg:w-1/3 py-2 px-4 rounded-full bg-transparent text-white border border-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
           />
         </div>
 
