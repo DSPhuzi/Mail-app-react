@@ -23,6 +23,7 @@ function Google({ headingText }) {
         localStorage.setItem('profilePic', response.data.user.pfp);
   
         // Save other necessary data to localStorage (e.g., authToken)
+        localStorage.setItem('refreshToken', response.data.refresh)
         localStorage.setItem('authToken', response.data.access); // Assuming access token is returned as 'access'
   
         console.log('Profile picture saved to localStorage:', response.data.user.pfp);
@@ -31,7 +32,6 @@ function Google({ headingText }) {
       }
   
       // Show success message and navigate
-      alert(`${headingText} Successful!`);
       navigate('/home'); // Navigate to the home page after success
     } catch (error) {
       console.error('Error during authentication:', error);
