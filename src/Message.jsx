@@ -52,6 +52,7 @@ function Message() {
                 body: editorValue, // Send message as HTML content
                 file: encodedFiles, // Attachments as Base64
             };
+            console.log(editorValue);
     
             // Send the POST request to the backend with the JWT token in the Authorization header
             const response = await fetch('http://localhost:8000/emails', {
