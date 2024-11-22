@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import apiClient from './authService';
 
 function Message() {
     const [ccVisible, setCcVisible] = useState(false);
@@ -55,17 +56,12 @@ function Message() {
             console.log(editorValue);
     
             // Send the POST request to the backend with the JWT token in the Authorization header
-            const response = await fetch('http://localhost:8000/emails', {
-                method: 'POST',
+            const response = await apiClient.post('emails', payload, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+                    Authorization: `Bearer ${token}`, // Include the JWT token
                 },
-                body: JSON.stringify(payload),
             });
-    
-            const result = await response.json();
-            console.log('Email sent:', result);
+            console.log(response.data);
         } catch (error) {
             console.error('Error sending email:', error);
         }
