@@ -3,6 +3,8 @@ import Google from './Google';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, altButtonText }) {
+  localStorage.clear();
+  
   // State for form fields
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
