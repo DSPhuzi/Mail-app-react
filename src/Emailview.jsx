@@ -10,8 +10,9 @@ function Emailview() {
   // Fetch email data based on the emailId
   useEffect(() => {
     // Replace with your actual API call to fetch email by ID
-    API.get(`/emails/${emailId}`)
+    API.get(`/email/${emailId}`)
       .then((response) => {
+        console.log(response.data);
         setEmail(response.data); // Set the email data
       })
       .catch((error) => {
