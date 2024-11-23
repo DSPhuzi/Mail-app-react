@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function Google({ headingText }) {
+  localStorage.clear();
   const navigate = useNavigate(); // Initialize useNavigate
 
   // Handle login success

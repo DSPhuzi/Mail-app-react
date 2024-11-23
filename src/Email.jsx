@@ -1,13 +1,15 @@
 import React from 'react';
 
-function Email({ email, loggedInUser }) {
-  const { sender_username, sender, pfp, recipients, subject, body, timestamp } = email;
+function Email({ email }) {
+  const { id, sender_username, sender, pfp, recipients, subject, body, timestamp } = email;
+
+
 
   // Check if the logged-in user's email is in the recipients list
-  if (!recipients.includes(loggedInUser)) {
-    console.log(`Email skipped for user: ${loggedInUser}`);
-    return null; // Don't render this email if the logged-in user is not a recipient
-  }
+  // if (!recipients.includes(loggedInUser)) {
+  //   console.log(`Email skipped for user: ${loggedInUser}`);
+  //   return null; // Don't render this email if the logged-in user is not a recipient
+  // }
 
   return (
     <div className="flex justify-between items-center p-4 hover:bg-gray-200 rounded-lg w-full xl:space-x-6 2xl:space-x-8">

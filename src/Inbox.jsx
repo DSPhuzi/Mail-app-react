@@ -16,7 +16,7 @@ function Inbox() {
   // Fetch logged-in user's email and emails from the API
   useEffect(() => {
     // Simulate getting logged-in user's email (replace with actual logic, e.g., from authentication)
-    const userEmail = 'mueezimran1@gmail.com'; // Replace this with dynamic user data
+    const userEmail = {loggedInUser}; // Replace this with dynamic user data
     setLoggedInUser(userEmail);
 
     // Fetch emails from the backend
@@ -38,9 +38,10 @@ function Inbox() {
         {emails.length > 0 ? (
           emails.map((email) => (
             <Email
-              key={email.id} // Unique key for each email
+
+              // key={email.id} // Unique key for each email
               email={email} // Pass the entire email object
-              loggedInUser={loggedInUser} // Pass the logged-in user's email
+              // loggedInUser={loggedInUser} // Pass the logged-in user's email
             />
           ))
         ) : (
