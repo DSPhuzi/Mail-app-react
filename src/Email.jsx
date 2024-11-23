@@ -1,18 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 
 function Email({ email }) {
   const { id, sender_username, sender, pfp, recipients, subject, body, timestamp } = email;
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
-
-
-  // Check if the logged-in user's email is in the recipients list
-  // if (!recipients.includes(loggedInUser)) {
-  //   console.log(`Email skipped for user: ${loggedInUser}`);
-  //   return null; // Don't render this email if the logged-in user is not a recipient
-  // }
+  // Function to handle email click
+  const handleEmailClick = () => {
+    navigate(`/emailview/${id}`); // Navigate to the correct route with email ID
+  };
 
   return (
-    <div className="flex justify-between items-center p-4 hover:bg-gray-200 rounded-lg w-full xl:space-x-6 2xl:space-x-8">
+    <div className="flex justify-between items-center p-4 hover:bg-gray-200 rounded-lg w-full xl:space-x-6 2xl:space-x-8" onClick={handleEmailClick}>
       {/* Sender's profile picture */}
       <div className="flex items-center space-x-4 xl:space-x-6 w-full">
         <img

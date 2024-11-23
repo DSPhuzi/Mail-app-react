@@ -6,7 +6,7 @@ import Home from './Home'; // Import Home component
 import Compose from './Compose'; // Import Compose component
 import EmailRead from './EmailRead'; // Import EmailRead component
 import { useState } from 'react';
-import Emailview from './Emailview';
+import Emailview from './Emailview'; // Import Emailview component
 
 function App() {
   const [isSignUpMode, setIsSignUpMode] = useState(true);
@@ -38,7 +38,9 @@ function App() {
 
         {/* Route to Read Email component */}
         <Route path="/email" element={<EmailRead />} />
-        <Route path="/emailview" element={<Emailview />} />
+
+        {/* Route to Emailview component with dynamic emailId */}
+        <Route path="/emailview/:emailId" element={<Emailview />} />
       </Routes>
     </div>
   );
