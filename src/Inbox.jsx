@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Email from './Email';
 import API from './authService';
 
-function Inbox() {
+function Inbox({ folder }) {  // Added folder prop
   const [emails, setEmails] = useState([]); // State to store emails
   const [loggedInUser, setLoggedInUser] = useState(''); // State for logged-in user's email
   const navigate = useNavigate(); // Hook for navigation
@@ -16,11 +16,11 @@ function Inbox() {
   // Fetch logged-in user's email and emails from the API
   useEffect(() => {
     // Simulate getting logged-in user's email (replace with actual logic, e.g., from authentication)
-    const userEmail = {loggedInUser}; // Replace this with dynamic user data
+    const userEmail = 'user@example.com'; // Replace this with dynamic user data
     setLoggedInUser(userEmail);
 
-    // Fetch emails from the backend
-    API.get('/emails/inbox') // Replace with your endpoint
+    // Use the folder prop in the API request
+    API.get(`/emails/${folder}`) // Fetch based on the folder prop (inbox or sent)
       .then((response) => {
         console.log('Emails fetched:', response.data);
         setEmails(response.data); // Set the emails from the backend
@@ -28,7 +28,7 @@ function Inbox() {
       .catch((error) => {
         console.error('Error fetching emails:', error);
       });
-  }, []);
+  }, [folder]); // Re-fetch emails when the folder changes
 
   return (
     <div className="relative bg-white rounded-lg shadow-lg p-6">
@@ -37,12 +37,7 @@ function Inbox() {
         {/* Map through the emails and pass props to the Email component */}
         {emails.length > 0 ? (
           emails.map((email) => (
-            <Email
-
-              // key={email.id} // Unique key for each email
-              email={email} // Pass the entire email object
-              // loggedInUser={loggedInUser} // Pass the logged-in user's email
-            />
+            <Email key={email.id} email={email} />
           ))
         ) : (
           <p>No emails to display</p>

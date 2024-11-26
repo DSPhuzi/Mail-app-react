@@ -3,7 +3,7 @@ import Sidebar from './Sidebar';
 import Inbox from './Inbox';
 import Navbar from './Navbar';
 
-function Home() {
+function Sent() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
 
   // Function to toggle the sidebar visibility
@@ -27,11 +27,11 @@ function Home() {
           <h1 className="text-4xl font-semibold text-gray-800 text-center mt-12 pt-5 mb-6">
             Inbox
           </h1>
-          <Inbox folder="inbox" />  
+          <Inbox folder="sent" />  
         </div>
       </div>
     </div>
   );
 }
 
-export default Home;
+export default Sent;

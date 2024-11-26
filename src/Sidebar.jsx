@@ -32,7 +32,7 @@ function Sidebar({ isOpen }) {
           <i className="fas fa-clock text-gray-600"></i>
           <span>Snoozed</span>
         </button>
-        <button className="flex items-center space-x-3 w-full text-left hover:bg-gray-100 p-2 rounded">
+        <button className="flex items-center space-x-3 w-full text-left hover:bg-gray-100 p-2 rounded"         onClick={() => handleNavigation('/sent')}>
           <i className="fas fa-paper-plane text-blue-500"></i>
           <span>Sent</span>
         </button>
