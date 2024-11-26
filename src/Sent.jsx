@@ -25,7 +25,7 @@ function Sent() {
         <div className="flex-1 p-4">
           {/* Render Inbox component here */}
           <h1 className="text-4xl font-semibold text-gray-800 text-center mt-12 pt-5 mb-6">
-            Inbox
+           Sent
           </h1>
           <Inbox folder="sent" />  
         </div>

@@ -89,12 +89,10 @@ function EmailRead({ email }) {
         </div>
 
         {/* Email Body */}
-        <div className="p-6 text-gray-800 bg-white">
-          <div
-            className="leading-relaxed space-y-4"
-            dangerouslySetInnerHTML={{ __html: body || "<p>No Content</p>" }}
-          />
-        </div>
+        <div
+  className="email-body p-6 text-gray-800 bg-white"
+  dangerouslySetInnerHTML={{ __html: body || "<p>No Content</p>" }}
+/>
 
         {/* Attachments */}
         {file && file.length > 0 && (

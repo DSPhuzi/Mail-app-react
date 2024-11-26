@@ -32,7 +32,6 @@ function Inbox({ folder }) {  // Added folder prop
 
   return (
     <div className="relative bg-white rounded-lg shadow-lg p-6">
-      <h1 className="text-2xl font-bold mb-4">Inbox</h1>
       <div className="space-y-4">
         {/* Map through the emails and pass props to the Email component */}
         {emails.length > 0 ? (
