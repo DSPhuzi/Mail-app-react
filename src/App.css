@@ -41,9 +41,7 @@
   color: #888;
 }
 .email-body h1 {
-  font-size: 2.25rem;  /* This makes the text larger */
-  font-weight: bold;
-  text-decoration: underline; /* If you want underline applied */
+  font-size: 2.25rem;  /* This makes the text larger */ /* If you want underline applied */
 }
 
 .email-body h2 {

@@ -1,5 +1,7 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'; // Import useLocation to get the current route
+import { useNavigate, useLocation } from 'react-router-dom';
+import { HiOutlineInboxArrowDown } from 'react-icons/hi2';
+import API from './authService'; // Import your API instance
 
 function Email({ email }) {
   const { id, sender_username, sender, pfp, recipients, subject, body, timestamp } = email;
@@ -9,6 +11,26 @@ function Email({ email }) {
   // Function to handle email click
   const handleEmailClick = () => {
     navigate(`/emailview/${id}`); // Navigate to the correct route with email ID
+  };
+
+  // Function to handle archive action
+  const handleArchiveClick = async (e) => {
+    e.stopPropagation(); // Prevent triggering the email click
+
+    try {
+      const response = await API.put(`/emails/${id}`, {
+        archive: true,
+      });
+
+      if (response.status === 200) {
+        console.log(`Email with ID ${id} archived successfully`);
+        // Optionally, update the UI to reflect the archive action
+      } else {
+        console.error(`Failed to archive email with ID ${id}`);
+      }
+    } catch (error) {
+      console.error('An error occurred while archiving the email:', error);
+    }
   };
 
   // Check if the current route is '/sent'
@@ -52,10 +74,20 @@ function Email({ email }) {
         </div>
       </div>
 
-      {/* Timestamp */}
-      <span className="text-gray-500 hidden sm:block text-sm xl:text-base 2xl:text-lg">
-        {timestamp}
-      </span>
+      {/* Timestamp and archive icon */}
+      <div className="flex items-center space-x-4">
+        <span className="text-gray-500 hidden sm:block text-sm xl:text-base 2xl:text-lg">
+          {timestamp}
+        </span>
+        {/* Archive icon */}
+        <button
+          className="text-gray-500 hover:text-gray-800"
+          onClick={handleArchiveClick}
+          aria-label="Archive Email"
+        >
+          <HiOutlineInboxArrowDown size={20} />
+        </button>
+      </div>
     </div>
   );
 }
