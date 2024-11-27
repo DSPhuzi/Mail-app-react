@@ -18,11 +18,11 @@ function Email({ email }) {
     e.stopPropagation(); // Prevent triggering the email click
 
     try {
-      const response = await API.put(`/emails/${id}`, {
-        archive: true,
+      const response = await API.put(`/email/${id}`, {
+        archived: "True",
       });
 
-      if (response.status === 200) {
+      if (response.status === 204) {
         console.log(`Email with ID ${id} archived successfully`);
         // Optionally, update the UI to reflect the archive action
       } else {
