@@ -80,14 +80,16 @@ function Email({ email }) {
         <span className="text-gray-500 hidden sm:block text-sm xl:text-base 2xl:text-lg">
           {timestamp}
         </span>
-        {/* Archive icon */}
-        <button
-          className={`text-gray-500 hover:text-gray-800 ${archived ? 'text-green-500' : ''}`} // Change color for archived state
-          onClick={handleArchiveClick}
-          aria-label="Toggle Archive Email"
-        >
-          <HiOutlineInboxArrowDown size={20} />
-        </button>
+        {/* Archive icon: Show only if not '/sent' */}
+        {!isSent && (
+          <button
+            className={`text-gray-500 hover:text-gray-800 ${archived ? 'text-green-500' : ''}`} // Change color for archived state
+            onClick={handleArchiveClick}
+            aria-label="Toggle Archive Email"
+          >
+            <HiOutlineInboxArrowDown size={20} />
+          </button>
+        )}
       </div>
     </div>
   );
