@@ -7,6 +7,7 @@ import Navbar from './Navbar';
 function Emailview() {
   const { emailId } = useParams(); // Extract emailId from URL
   const [email, setEmail] = useState(null); // State to store the email data
+  const [replies, setReply] = useState(null);
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
@@ -29,7 +30,10 @@ function Emailview() {
 
     API.get(`/email/${emailId}`)
       .then((response) => {
-        setEmail(response.data); // Set the email data
+        setEmail(response.data.email);
+        setReply(response.data.replies);
+        console.log(response.data.replies);
+
         setLoading(false); // Data has been fetched, stop loading
       })
       .catch((error) => {
