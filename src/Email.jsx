@@ -4,7 +4,7 @@ import { HiOutlineInboxArrowDown } from 'react-icons/hi2';
 import API from './authService'; // Import your API instance
 
 function Email({ email }) {
-  const { id, sender_username, sender, pfp, recipients, subject, body, timestamp } = email;
+  const { id, sender_username, sender, pfp, recipients, subject, body, timestamp, archived } = email; // Include `archived` in destructuring
   const navigate = useNavigate(); // Initialize useNavigate hook
   const location = useLocation(); // Access the current location (route)
 
@@ -13,23 +13,24 @@ function Email({ email }) {
     navigate(`/emailview/${id}`); // Navigate to the correct route with email ID
   };
 
-  // Function to handle archive action
+  // Function to handle archive toggle action
   const handleArchiveClick = async (e) => {
     e.stopPropagation(); // Prevent triggering the email click
 
+    const newArchivedState = !archived; // Toggle archived state
     try {
       const response = await API.put(`/email/${id}`, {
-        archived: "True",
+        archived: newArchivedState, // Set the new state
       });
 
       if (response.status === 204) {
-        console.log(`Email with ID ${id} archived successfully`);
-        // Optionally, update the UI to reflect the archive action
+        console.log(`Email with ID ${id} ${newArchivedState ? 'archived' : 'unarchived'} successfully`);
+        window.location.reload(); // Reload the page to reflect changes
       } else {
-        console.error(`Failed to archive email with ID ${id}`);
+        console.error(`Failed to update email with ID ${id}`);
       }
     } catch (error) {
-      console.error('An error occurred while archiving the email:', error);
+      console.error('An error occurred while updating the email:', error);
     }
   };
 
@@ -79,14 +80,16 @@ function Email({ email }) {
         <span className="text-gray-500 hidden sm:block text-sm xl:text-base 2xl:text-lg">
           {timestamp}
         </span>
-        {/* Archive icon */}
-        <button
-          className="text-gray-500 hover:text-gray-800"
-          onClick={handleArchiveClick}
-          aria-label="Archive Email"
-        >
-          <HiOutlineInboxArrowDown size={20} />
-        </button>
+        {/* Archive icon: Show only if not '/sent' */}
+        {!isSent && (
+          <button
+            className={`text-gray-500 hover:text-gray-800 ${archived ? 'text-green-500' : ''}`} // Change color for archived state
+            onClick={handleArchiveClick}
+            aria-label="Toggle Archive Email"
+          >
+            <HiOutlineInboxArrowDown size={20} />
+          </button>
+        )}
       </div>
     </div>
   );
