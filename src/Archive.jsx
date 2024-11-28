@@ -5,16 +5,22 @@ import Navbar from './Navbar';
 
 function Archive() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
 
   // Function to toggle the sidebar visibility
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  // Callback function to handle search input from Navbar
+  const handleSearch = (query) => {
+    setSearchQuery(query.toLowerCase()); // Update search query state
+  };
+
   return (
     <div className="container">
-      {/* Navbar with sidebar toggle */}
-      <Navbar toggleSidebar={toggleSidebar} />
+      {/* Navbar with search and sidebar toggle */}
+      <Navbar toggleSidebar={toggleSidebar} onSearch={handleSearch} />
 
       {/* Main content area */}
       <div className="flex">
@@ -23,11 +29,11 @@ function Archive() {
 
         {/* Main content */}
         <div className="flex-1 p-4">
-          {/* Render Inbox component here */}
+          {/* Render Inbox component with search query */}
           <h1 className="text-4xl font-semibold text-gray-800 text-center mt-12 pt-5 mb-6">
-           Archive
+            Archive
           </h1>
-          <Inbox folder="archive" />  
+          <Inbox folder="archive" searchQuery={searchQuery} />
         </div>
       </div>
     </div>
