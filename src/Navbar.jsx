@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 
-function Navbar({ toggleSidebar }) {
+function Navbar({ toggleSidebar, onSearch }) {
   const [profilePic, setProfilePic] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(''); // State for search input
 
   useEffect(() => {
     // Retrieve the profile picture from localStorage
     const storedProfilePic = localStorage.getItem('profilePic');
-    
-    console.log('Retrieved profile picture from localStorage:', storedProfilePic); // Debugging log
-
     if (storedProfilePic) {
-      setProfilePic(storedProfilePic); // Update state with the profile picture URL
-    } else {
-      console.warn('No profile picture found in localStorage.');
+      setProfilePic(storedProfilePic);
     }
   }, []);
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query); // Update local state
+    onSearch(query); // Pass the query to the parent component
+  };
 
   return (
     <nav className="bg-indigo-500 fixed w-full top-0 left-0 z-50 shadow-md">
@@ -24,7 +27,7 @@ function Navbar({ toggleSidebar }) {
           <img src="your-logo.png" alt="Logo" className="hidden lg:block h-8" />
           <button
             className="lg:hidden text-white"
-            onClick={toggleSidebar} // Sidebar toggle
+            onClick={toggleSidebar}
           >
             <svg
               className="w-6 h-6"
@@ -48,6 +51,8 @@ function Navbar({ toggleSidebar }) {
           <input
             type="text"
             placeholder="Search..."
+            value={searchQuery}
+            onChange={handleSearchChange}
             className="w-full lg:w-1/3 py-2 px-4 rounded-full bg-transparent text-white border border-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-white"
           />
         </div>
@@ -56,13 +61,10 @@ function Navbar({ toggleSidebar }) {
         <div>
           {profilePic ? (
             <img
-              src={profilePic} // Render the profile picture
+              src={profilePic}
               alt="Profile"
               className="w-10 h-10 rounded-full border border-white"
-              onError={(e) => {
-                console.error('Failed to load profile picture. Using fallback:', e.target.src);
-                e.target.src = 'https://via.placeholder.com/150?text=Profile'; // Use a reliable placeholder fallback
-              }}
+              onError={(e) => (e.target.src = 'https://via.placeholder.com/150?text=Profile')}
             />
           ) : (
             <span className="text-white">Loading...</span>
