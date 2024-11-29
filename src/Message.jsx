@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
+import DatePicker from 'react-datepicker';
 import 'react-quill/dist/quill.snow.css';
+import 'react-datepicker/dist/react-datepicker.css';
 import apiClient from './authService';
 
 function Message() {
@@ -12,6 +14,9 @@ function Message() {
     const [cc, setCc] = useState('');
     const [bcc, setBcc] = useState('');
     const [subject, setSubject] = useState('');
+    const [selectedDate, setSelectedDate] = useState(null); // State for date and time
+    const [showDatePicker, setShowDatePicker] = useState(false); // State to toggle the date picker
+    const [dateError, setDateError] = useState(''); // Error message state
 
     // Handle file selection
     const handleFileChange = (e) => {
@@ -24,6 +29,18 @@ function Message() {
         const updatedAttachments = [...attachments];
         updatedAttachments.splice(index, 1);
         setAttachments(updatedAttachments);
+    };
+
+    // Handle date selection and error check
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+
+        // Check if the selected date is in the past
+        if (date && date < new Date()) {
+            setDateError("Please choose a date and time that has not passed yet.");
+        } else {
+            setDateError('');
+        }
     };
 
     // Send the email data (including attachments and message as HTML)
@@ -40,10 +57,10 @@ function Message() {
                     });
                 })
             );
-    
+
             // Get the JWT token from localStorage (or wherever it's stored)
             const token = localStorage.getItem('authToken'); // Adjust based on your storage method
-    
+
             // Create the payload
             const payload = {
                 recipients: to, // Support multiple recipients
@@ -52,9 +69,9 @@ function Message() {
                 subject: subject,
                 body: editorValue, // Send message as HTML content
                 file: encodedFiles, // Attachments as Base64
+                schedule: selectedDate, // Add the selected date and time
             };
-            console.log(editorValue);
-    
+
             // Send the POST request to the backend with the JWT token in the Authorization header
             const response = await apiClient.post('emails', payload, {
                 headers: {
@@ -66,7 +83,6 @@ function Message() {
             console.error('Error sending email:', error);
         }
     };
-    
 
     return (
         <div className="min-h-screen bg-white flex justify-center items-center py-10 mt-5">
@@ -78,6 +94,42 @@ function Message() {
                     </button>
                 </div>
                 <div className="px-8 py-6 space-y-6 overflow-y-auto flex-1">
+                <div className="container flex justify-center items-center space-x-2">
+    {!showDatePicker ? (
+        <button
+            className="text-gray-600 hover:text-gray-800 transition"
+            onClick={() => setShowDatePicker(true)}
+        >
+            <i className="fas fa-calendar-alt"></i>
+        </button>
+    ) : (
+        <div className="flex items-center space-x-2">
+            <DatePicker
+                selected={selectedDate}
+                onChange={handleDateChange} // Use the handleDateChange function here
+                showTimeSelect
+                dateFormat="dd-MM-yyyy HH:mm" // Display date in day-month-year format with time
+                placeholderText="Select date and time"
+                className="px-4 py-3 border rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <button
+                className="text-red-500 hover:text-red-700 transition"
+                onClick={() => {
+                    setSelectedDate(null); // Clear the selected date
+                    setShowDatePicker(false); // Hide the DatePicker and show the calendar icon again
+                }}
+                aria-label="Clear Date"
+            >
+                <i className="fas fa-times-circle"></i>
+            </button>
+        </div>
+    )}
+</div>
+{dateError && (
+    <p className="text-red-500 text-sm mt-2 text-center">{dateError}</p> // Error message appears below and centered
+)}
+
+
                     <div className="flex items-center">
                         <label htmlFor="to" className="w-20 text-gray-700 font-medium">
                             To
@@ -186,7 +238,7 @@ function Message() {
                     >
                         Send
                     </button>
-                    <div className="flex space-x-4">
+                    <div className="flex space-x-4 items-center">
                         <label htmlFor="file-input" className="text-gray-600 hover:text-gray-800 transition cursor-pointer">
                             <i className="fas fa-paperclip"></i>
                         </label>
