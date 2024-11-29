@@ -33,10 +33,19 @@ function EmailRead({ email }) {
     );
   }
 
+  const userEmail = localStorage.getItem('email'); // Get the user's email from localStorage
+  console.log("userEmail", userEmail);
+
   let { pfp, subject, timestamp, sender, recipients, cc, bcc, body, file } = email;
+
+  // Check if the user's email is in recipients or cc, then hide bcc
+  const isRecipientOrCc = recipients.includes(userEmail) || cc.includes(userEmail);
+  console.log("isRecipientOrCc:", isRecipientOrCc);
+
+  // Make sure `file` is properly parsed
   file = file.replace(/'/g, '"');
   file = JSON.parse(file);
-  
+
   return (
     <div className="min-h-screen bg-white flex justify-center items-center py-8 px-4 mt-8">
       <div className="bg-white shadow-2xl rounded-lg w-full max-w-5xl">
@@ -44,7 +53,7 @@ function EmailRead({ email }) {
         <div className="flex justify-between items-center p-6 border-b bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-t-lg">
           <div className="flex items-center space-x-4">
             <img
-              src={pfp || "https://via.placeholder.com/150"}
+              src={pfp || "https://www.w3schools.com/w3images/avatar2.png"}
               alt="Profile"
               className="w-12 h-12 rounded-full object-cover"
             />
@@ -80,7 +89,7 @@ function EmailRead({ email }) {
               {cc.join(", ")}
             </div>
           )}
-          {bcc && bcc.length > 0 && (
+          {!isRecipientOrCc && bcc && bcc.length > 0 && (
             <div className="text-sm text-gray-500 pl-2 mt-2">
               <span className="font-medium text-gray-700 mr-2">BCC:</span>
               {bcc.join(", ")}
@@ -90,9 +99,9 @@ function EmailRead({ email }) {
 
         {/* Email Body */}
         <div
-  className="email-body p-6 text-gray-800 bg-white"
-  dangerouslySetInnerHTML={{ __html: body || "<p>No Content</p>" }}
-/>
+          className="email-body p-6 text-gray-800 bg-white"
+          dangerouslySetInnerHTML={{ __html: body || "<p>No Content</p>" }}
+        />
 
         {/* Attachments */}
         {file && file.length > 0 && (
@@ -136,6 +145,5 @@ function EmailRead({ email }) {
     </div>
   );
 }
-
 
 export default EmailRead;

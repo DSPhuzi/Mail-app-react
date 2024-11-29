@@ -64,10 +64,16 @@ function Navbar({ toggleSidebar, onSearch }) {
               src={profilePic}
               alt="Profile"
               className="w-10 h-10 rounded-full border border-white"
-              onError={(e) => (e.target.src = 'https://via.placeholder.com/150?text=Profile')}
+              onError={(e) => (e.target.src = 'https://www.w3schools.com/w3images/avatar2.png')}
             />
           ) : (
-            <span className="text-white">Loading...</span>
+            <img
+            src='https://www.w3schools.com/w3images/avatar2.png'
+            alt="Profile"
+            className="w-10 h-10 rounded-full border border-white"
+            onError={(e) => (e.target.src = 'https://www.w3schools.com/w3images/avatar2.png')}
+          />
+            
           )}
         </div>
       </div>

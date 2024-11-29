@@ -22,12 +22,13 @@ function Google({ headingText }) {
       if (response.data && response.data.user && response.data.user.pfp) {
         // Save profile picture to localStorage
         localStorage.setItem('profilePic', response.data.user.pfp);
-  
+        localStorage.setItem('email', response.data.user.email);
         // Save other necessary data to localStorage (e.g., authToken)
         localStorage.setItem('refreshToken', response.data.refresh)
         localStorage.setItem('authToken', response.data.access); // Assuming access token is returned as 'access'
   
         console.log('Profile picture saved to localStorage:', response.data.user.pfp);
+        console.log('Email saved to localStorage:', response.data.user.email);
       } else {
         console.log('No profile picture in the response.');
       }

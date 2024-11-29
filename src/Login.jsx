@@ -50,6 +50,8 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
         console.log(data);
 
         // Save the JWT token to localStorage
+        localStorage.setItem('email', data.user.email);
+        console.log('Email saved to localStorage:', data.user.email);
         localStorage.setItem('authToken', data.access); // Save the access token
         localStorage.setItem('refreshToken', data.refresh); // Optionally, save the refresh token
 
