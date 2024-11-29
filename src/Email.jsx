@@ -24,7 +24,7 @@ function Email({ email }) {
     navigate(`/emailview/${id}`);
   };
 
-  // Toggle archive state
+  // Toggle archive state and reload page after archiving
   const handleArchiveClick = async (e) => {
     e.stopPropagation(); // Prevent parent click event
 
@@ -37,6 +37,9 @@ function Email({ email }) {
       if (response.status === 204) {
         console.log(`Email with ID ${id} ${newArchivedState ? 'archived' : 'unarchived'} successfully`);
         setIsArchived(newArchivedState); // Update local state
+
+        // Force reload by updating the location.href
+        window.location.href = window.location.href;
       } else {
         console.error(`Failed to update email with ID ${id}`);
       }
