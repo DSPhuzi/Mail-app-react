@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import ReactQuill from "react-quill";  // Import React Quill
+import 'react-quill/dist/quill.snow.css';  // Import Quill styles
 
 function EmailRead({ email }) {
   const handleFileDownload = (name, content) => {
@@ -97,11 +99,17 @@ function EmailRead({ email }) {
           )}
         </div>
 
-        {/* Email Body */}
-        <div
-          className="email-body p-6 text-gray-800 bg-white"
-          dangerouslySetInnerHTML={{ __html: body || "<p>No Content</p>" }}
-        />
+        {/* Email Body - Use React Quill for rendering the body */}
+        <div className="email-body p-6 text-gray-800 bg-white">
+          <ReactQuill
+            value={body || "<p>No Content</p>"}
+            readOnly={true}  // Set to true to make the body read-only
+            theme="snow"     // Use the "snow" theme for styling
+            modules={{
+              toolbar: false,  // Disable the toolbar completely
+            }}
+          />
+        </div>
 
         {/* Attachments */}
         {file && file.length > 0 && (
