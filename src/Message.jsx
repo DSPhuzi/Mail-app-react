@@ -69,7 +69,7 @@ function Message() {
                 subject: subject,
                 body: editorValue, // Send message as HTML content
                 file: encodedFiles, // Attachments as Base64
-                schedule: selectedDate, // Add the selected date and time
+                scheduled_time: selectedDate, // Add the selected date and time
             };
 
             // Send the POST request to the backend with the JWT token in the Authorization header

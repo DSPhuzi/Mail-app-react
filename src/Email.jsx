@@ -14,13 +14,24 @@ function Email({ email }) {
     body,
     timestamp,
     archived,
-  } = email; // Include `archived` in destructuring
-  const [isArchived, setIsArchived] = useState(archived); // Local state for archive toggle
+    read, // Include `read` in destructuring
+  } = email;
+  const [isArchived, setIsArchived] = useState(archived);
+  const [isRead, setIsRead] = useState(read); // Local state for read status
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Navigate to detailed email view
-  const handleEmailClick = () => {
+  // Handle click to navigate and mark email as read
+  const handleEmailClick = async () => {
+    try {
+      const response = await API.put(`/email/${id}`, { read: true });
+      if (response.status === 204) {
+        console.log(`Email with ID ${id} marked as read successfully`);
+        setIsRead(true); // Update local read state
+      }
+    } catch (error) {
+      console.error('An error occurred while marking the email as read:', error);
+    }
     navigate(`/emailview/${id}`);
   };
 
@@ -32,14 +43,15 @@ function Email({ email }) {
     try {
       const response = await API.put(`/email/${id}`, {
         archived: newArchivedState,
+        read: isRead, // Maintain the current read state
       });
 
       if (response.status === 204) {
-        console.log(`Email with ID ${id} ${newArchivedState ? 'archived' : 'unarchived'} successfully`);
+        console.log(
+          `Email with ID ${id} ${newArchivedState ? 'archived' : 'unarchived'} successfully`
+        );
         setIsArchived(newArchivedState); // Update local state
-
-        // Force reload by updating the location.href
-        window.location.href = window.location.href;
+        window.location.href = window.location.href; // Force reload
       } else {
         console.error(`Failed to update email with ID ${id}`);
       }
@@ -48,16 +60,18 @@ function Email({ email }) {
     }
   };
 
-  const isSent = location.pathname === '/sent'; // Check if the current route is 'sent'
+  const isSent = location.pathname === '/sent';
 
   // Dynamic recipients display
   const recipientList = Array.isArray(recipients) ? recipients : recipients.split(',');
-  const displayedRecipients = recipientList.slice(0, 1).join(', '); // First recipient
-  const remainingRecipients = recipientList.length > 1 ? '...' : ''; // "..." if more recipients
+  const displayedRecipients = recipientList.slice(0, 1).join(', ');
+  const remainingRecipients = recipientList.length > 1 ? '...' : '';
 
   return (
     <div
-      className="flex justify-between items-center p-4 hover:bg-gray-200 rounded-lg w-full xl:space-x-6 2xl:space-x-8"
+      className={`flex justify-between items-center p-4 hover:bg-gray-200 rounded-lg w-full xl:space-x-6 2xl:space-x-8 ${
+        isRead ? 'text-gray-500' : 'font-bold text-gray-800'
+      }`}
       onClick={handleEmailClick}
     >
       {/* Sender or Recipients */}
@@ -69,19 +83,19 @@ function Email({ email }) {
         />
         <div className="flex flex-col w-full">
           {isSent ? (
-            <h2 className="font-semibold text-gray-800 text-left text-sm xl:text-base 2xl:text-lg">
+            <h2 className="text-left text-sm xl:text-base 2xl:text-lg">
               {displayedRecipients} {remainingRecipients}
             </h2>
           ) : (
-            <h2 className="font-semibold text-gray-800 text-left text-sm xl:text-base 2xl:text-lg">
+            <h2 className="text-left text-sm xl:text-base 2xl:text-lg">
               {sender_username}
             </h2>
           )}
-          <p className="text-gray-600 text-left text-xs xl:text-sm">
+          <p className="text-left text-xs xl:text-sm">
             Subject: {subject || 'No Subject'}
           </p>
           <p
-            className="text-gray-700 text-left text-xs xl:text-sm line-clamp-1"
+            className="text-left text-xs xl:text-sm line-clamp-1"
             dangerouslySetInnerHTML={{ __html: body || 'No Content' }}
           />
         </div>
@@ -89,14 +103,12 @@ function Email({ email }) {
 
       {/* Timestamp and Archive Icon */}
       <div className="flex items-center space-x-4">
-        <span className="text-gray-500 hidden sm:block text-sm xl:text-base 2xl:text-lg">
+        <span className="hidden sm:block text-sm xl:text-base 2xl:text-lg">
           {timestamp || 'Unknown Time'}
         </span>
         {!isSent && (
           <button
-            className={`text-gray-500 hover:text-gray-800 ${
-              isArchived ? 'text-green-500' : ''
-            }`}
+            className={`hover:text-gray-800 ${isArchived ? 'text-green-500' : ''}`}
             onClick={handleArchiveClick}
             aria-label="Toggle Archive Email"
           >
