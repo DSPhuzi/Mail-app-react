@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { HiOutlineInboxArrowDown } from 'react-icons/hi2';
+import { HiOutlineInboxArrowDown, HiOutlineTrash } from 'react-icons/hi2';
 import API from './authService';
 
 function Email({ email }) {
@@ -20,7 +20,6 @@ function Email({ email }) {
   const [isRead, setIsRead] = useState(read); // Local state for read status
   const navigate = useNavigate();
   const location = useLocation();
-
   // Handle click to navigate and mark email as read
   const handleEmailClick = async () => {
     try {
@@ -34,7 +33,6 @@ function Email({ email }) {
     }
     navigate(`/emailview/${id}`);
   };
-
   // Toggle archive state and reload page after archiving
   const handleArchiveClick = async (e) => {
     e.stopPropagation(); // Prevent parent click event
@@ -57,6 +55,24 @@ function Email({ email }) {
       }
     } catch (error) {
       console.error('An error occurred while updating the email:', error);
+    }
+  };
+
+  // Handle delete click
+  const handleDeleteClick = async (e) => {
+    e.stopPropagation(); // Prevent parent click event
+
+    try {
+      const response = await API.delete(`/email/${id}`);
+      if (response.status === 200) {
+        console.log(`Email with ID ${id} deleted successfully`);
+        // Optionally, navigate to a different page or update UI to remove email
+        window.location.reload()
+      } else {
+        console.error(`Failed to delete email with ID ${id}`);
+      }
+    } catch (error) {
+      console.error('An error occurred while deleting the email:', error);
     }
   };
 
@@ -101,19 +117,28 @@ function Email({ email }) {
         </div>
       </div>
 
-      {/* Timestamp and Archive Icon */}
+      {/* Timestamp, Archive Icon, and Delete Icon */}
       <div className="flex items-center space-x-4">
         <span className="hidden sm:block text-sm xl:text-base 2xl:text-lg">
           {timestamp || 'Unknown Time'}
         </span>
         {!isSent && (
-          <button
-            className={`hover:text-gray-800 ${isArchived ? 'text-green-500' : ''}`}
-            onClick={handleArchiveClick}
-            aria-label="Toggle Archive Email"
-          >
-            <HiOutlineInboxArrowDown size={20} />
-          </button>
+          <>
+            <button
+              className={`hover:text-gray-800 ${isArchived ? 'text-green-500' : ''}`}
+              onClick={handleArchiveClick}
+              aria-label="Toggle Archive Email"
+            >
+              <HiOutlineInboxArrowDown size={20} />
+            </button>
+            <button
+              className="hover:text-gray-800 text-red-500"
+              onClick={handleDeleteClick}
+              aria-label="Delete Email"
+            >
+              <HiOutlineTrash size={20} />
+            </button>
+          </>
         )}
       </div>
     </div>

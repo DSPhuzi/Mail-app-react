@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import ReactQuill from "react-quill";  // Import React Quill
 import 'react-quill/dist/quill.snow.css';  // Import Quill styles
+import { useNavigate } from 'react-router-dom';
 
+import API from './authService';
 function EmailRead({ email }) {
   const handleFileDownload = (name, content) => {
     // Decode Base64 string
@@ -34,15 +36,31 @@ function EmailRead({ email }) {
       </div>
     );
   }
-
+  const navigate = useNavigate();
   const userEmail = localStorage.getItem('email'); // Get the user's email from localStorage
   console.log("userEmail", userEmail);
-
   let { pfp, subject, timestamp, sender, recipients, cc, bcc, body, file } = email;
 
   // Check if the user's email is in recipients or cc, then hide bcc
   const isRecipientOrCc = recipients.includes(userEmail) || cc.includes(userEmail);
   console.log("isRecipientOrCc:", isRecipientOrCc);
+  const handleDeleteClick = async (e) => {
+    e.stopPropagation(); // Prevent parent click event
+
+    try {
+      const response = await API.delete(`/email/${email.id}`);
+      if (response.status === 200) {
+        console.log(`Email with ID ${email.id} deleted successfully`);
+        // Optionally, navigate to a different page or update UI to remove email
+       
+        navigate('/home');
+      } else {
+        console.error(`Failed to delete email with ID ${email.id}`);
+      }
+    } catch (error) {
+      console.error('An error occurred while deleting the email:', error);
+    }
+  };
 
   // Make sure `file` is properly parsed
   file = file.replace(/'/g, '"');
@@ -136,19 +154,11 @@ function EmailRead({ email }) {
         )}
 
         {/* Footer */}
-        <div className="flex justify-between items-center p-6 bg-gradient-to-r from-gray-100 to-gray-200 rounded-b-lg border-t">
-          <div className="flex space-x-4">
-            <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-              Reply
-            </button>
-            <button className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition">
-              Forward
-            </button>
-          </div>
-          <button className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition ml-4">
-            Delete
-          </button>
-        </div>
+        <div className="flex justify-center items-center p-6 bg-gradient-to-r from-gray-100 to-gray-200 rounded-b-lg border-t">
+  <button className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition ml-4"  onClick={handleDeleteClick}>
+    Delete 
+  </button>
+</div>
       </div>
     </div>
   );

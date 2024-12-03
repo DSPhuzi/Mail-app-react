@@ -37,6 +37,18 @@ function Navbar({ toggleSidebar, onSearch, initialSearchQuery }) {
       handleSearchSubmit();
     }
   };
+  const handlelogout = async () => {
+    try {
+      const response = await API.post(`/logout`);
+      if (response.status === 204) {
+        console.log(`Logout`);
+      }
+    } catch (error) {
+      console.error('An error occurred while logging out:', error);
+    }
+    navigate(`/`);
+    localStorage.clear();
+  };
 
   return (
     <nav className="bg-indigo-500 fixed w-full top-0 left-0 z-50 shadow-md">
@@ -96,8 +108,10 @@ function Navbar({ toggleSidebar, onSearch, initialSearchQuery }) {
             <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg z-50">
               <button
                 onClick={() => {
-                  localStorage.clear();
-                  navigate('/');
+            
+                handlelogout();
+
+                  
                 }}
                 className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
               >
