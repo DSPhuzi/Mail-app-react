@@ -9,6 +9,7 @@ import { useState } from 'react';
 import Sent from './Sent'; 
 import Emailview from './Emailview';// Import Emailview component
 import Archive from './Archive';
+import Schedule from './Schedule';
 
 function App() {
   const [isSignUpMode, setIsSignUpMode] = useState(true);
@@ -42,6 +43,7 @@ function App() {
         <Route path="/email" element={<EmailRead />} />
         <Route path="/sent" element={<Sent />} />
         <Route path="/Archive" element={<Archive />} />
+        <Route path="/schedule" element={<Schedule />} />
         {/* Route to Emailview component with dynamic emailId */}
         <Route path="/emailview/:emailId" element={<Emailview />} />
       </Routes>

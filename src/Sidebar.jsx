@@ -50,7 +50,7 @@ function Sidebar({ isOpen }) {
           <i className="fas fa-exclamation-circle text-red-500"></i>
           <span>Important</span>
         </button>
-        <button className="flex items-center space-x-3 w-full text-left hover:bg-gray-100 p-2 rounded">
+        <button className="flex items-center space-x-3 w-full text-left hover:bg-gray-100 p-2 rounded" onClick={() => handleNavigation('/schedule')}>
           <i className="fas fa-calendar-alt text-gray-600"></i>
           <span>Schedule</span>
         </button>
