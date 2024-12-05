@@ -7,7 +7,8 @@ import Compose from './Compose'; // Import Compose component
 import EmailRead from './EmailRead'; // Import EmailRead component
 import { useState } from 'react';
 import Sent from './Sent'; 
-import Emailview from './Emailview';// Import Emailview component
+import Emailview from './Emailview';
+import Scheduleview from './Scheduleview';// Import Emailview component
 import Archive from './Archive';
 import Schedule from './Schedule';
 
@@ -46,6 +47,7 @@ function App() {
         <Route path="/schedule" element={<Schedule />} />
         {/* Route to Emailview component with dynamic emailId */}
         <Route path="/emailview/:emailId" element={<Emailview />} />
+        <Route path="/scheduleview/:emailId" element={<Scheduleview />} />
       </Routes>
     </div>
   );

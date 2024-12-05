@@ -21,18 +21,26 @@ function Email({ email }) {
   const navigate = useNavigate();
   const location = useLocation();
   // Handle click to navigate and mark email as read
-  const handleEmailClick = async () => {
-    try {
-      const response = await API.put(`/email/${id}`, { read: true });
-      if (response.status === 204) {
-        console.log(`Email with ID ${id} marked as read successfully`);
-        setIsRead(true); // Update local read state
-      }
-    } catch (error) {
-      console.error('An error occurred while marking the email as read:', error);
+// Handle click to navigate and mark email as read
+const handleEmailClick = async () => {
+  const isScheduled = location.pathname === '/schedule'; // Check if the current link is `/schedule`
+  const endpoint = isScheduled ? `/scheduledEmail/${id}` : `/email/${id}`; // Use the appropriate API endpoint
+  const navigateTo = isScheduled ? `/scheduleview/${id}` : `/emailview/${id}`; // Determine navigation target
+
+  try {
+    const response = await API.put(endpoint, { read: true });
+    if (response.status === 204) {
+      console.log(`Email with ID ${id} marked as read successfully`);
+      setIsRead(true); // Update local read state
     }
-    navigate(`/emailview/${id}`);
-  };
+  } catch (error) {
+    console.error('An error occurred while marking the email as read:', error);
+  }
+
+  navigate(navigateTo); // Navigate to the determined view
+};
+
+
   // Toggle archive state and reload page after archiving
   const handleArchiveClick = async (e) => {
     e.stopPropagation(); // Prevent parent click event
@@ -61,13 +69,16 @@ function Email({ email }) {
   // Handle delete click
   const handleDeleteClick = async (e) => {
     e.stopPropagation(); // Prevent parent click event
-
+  
+    const isScheduled = location.pathname === '/schedule'; // Check if the current link is `/schedule`
+    const endpoint = isScheduled ? `/scheduledEmail/${id}` : `/email/${id}`; // Use the appropriate API endpoint
+  
     try {
-      const response = await API.delete(`/email/${id}`);
+      const response = await API.delete(endpoint);
       if (response.status === 200) {
         console.log(`Email with ID ${id} deleted successfully`);
         // Optionally, navigate to a different page or update UI to remove email
-        window.location.reload()
+        window.location.reload();
       } else {
         console.error(`Failed to delete email with ID ${id}`);
       }
@@ -75,8 +86,9 @@ function Email({ email }) {
       console.error('An error occurred while deleting the email:', error);
     }
   };
-
+  
   const isSent = location.pathname === '/sent';
+  const isSchedule = location.pathname === '/schedule';
 
   // Dynamic recipients display
   const recipientList = Array.isArray(recipients) ? recipients : recipients.split(',');
@@ -122,7 +134,7 @@ function Email({ email }) {
         <span className="hidden sm:block text-sm xl:text-base 2xl:text-lg">
           {timestamp || 'Unknown Time'}
         </span>
-        {!isSent && (
+        {!(isSent||(isSchedule)) && (
           <>
             <button
               className={`hover:text-gray-800 ${isArchived ? 'text-green-500' : ''}`}
@@ -131,6 +143,10 @@ function Email({ email }) {
             >
               <HiOutlineInboxArrowDown size={20} />
             </button>
+          </>
+        )}
+        {!(isSent) && (
+        <>
             <button
               className="hover:text-gray-800 text-red-500"
               onClick={handleDeleteClick}
@@ -138,8 +154,8 @@ function Email({ email }) {
             >
               <HiOutlineTrash size={20} />
             </button>
-          </>
-        )}
+            </>
+            )}
       </div>
     </div>
   );
