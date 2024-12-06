@@ -61,10 +61,11 @@ function Login({ isSignUpMode, setIsSignUpMode, headingText, mainButtonText, alt
       } else {
         setError(data.error || "An error occurred");
         setSuccess(null);
+        console.error(data);
       }
     } catch (error) {
       setError("An error occurred");
-      console.error("Error:", error);
+      console.error(error);
     }
   };
 

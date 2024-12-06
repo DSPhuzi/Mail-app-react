@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-quill/dist/quill.snow.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import apiClient from './authService';
-
+import { useNavigate } from 'react-router-dom';
 function Message() {
     const [ccVisible, setCcVisible] = useState(false);
     const [bccVisible, setBccVisible] = useState(false);
@@ -44,6 +44,9 @@ function Message() {
     };
 
     // Send the email data (including attachments and message as HTML)
+    // Send the email data (including attachments and message as HTML)
+    const [errorMessage, setErrorMessage] = useState(''); // State to store error messages
+    const navigate = useNavigate(); 
     const handleSend = async () => {
         try {
             // Convert files to Base64
@@ -57,10 +60,10 @@ function Message() {
                     });
                 })
             );
-
+    
             // Get the JWT token from localStorage (or wherever it's stored)
             const token = localStorage.getItem('authToken'); // Adjust based on your storage method
-
+    
             // Create the payload
             const payload = {
                 recipients: to, // Support multiple recipients
@@ -71,18 +74,20 @@ function Message() {
                 file: encodedFiles, // Attachments as Base64
                 scheduled_time: selectedDate, // Add the selected date and time
             };
-
+    
             // Send the POST request to the backend with the JWT token in the Authorization header
             const response = await apiClient.post('emails', payload, {
                 headers: {
                     Authorization: `Bearer ${token}`, // Include the JWT token
                 },
             });
-            console.log(response.data);
+            navigate('/home'); 
         } catch (error) {
             console.error('Error sending email:', error);
+            setErrorMessage(error.error || 'An unexpected error occurred.'); // Store the error message
         }
     };
+    
 
     return (
         <div className="min-h-screen bg-white flex justify-center items-center py-10 mt-5">
@@ -128,6 +133,10 @@ function Message() {
 {dateError && (
     <p className="text-red-500 text-sm mt-2 text-center">{dateError}</p> // Error message appears below and centered
 )}
+{errorMessage && (
+    <p className="text-red-500 text-sm mt-2 text-center">{errorMessage}</p> // Display error message
+)}
+
 
 
                     <div className="flex items-center">

@@ -4,7 +4,7 @@ const API = axios.create({
   baseURL: 'http://127.0.0.1:8000/',
   headers: {
     'Content-Type': 'application/json', // Ensure JSON format
-  }, 
+  },
 });
 
 // Add an interceptor to handle token refresh
@@ -13,8 +13,17 @@ API.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Log the backend's original error message
+    if (error.response) {
+      // Access the backend response data
+      const backendMessage = error.response.data.error || error.response.data.message || error.response.data;
+      console.error('Backend Error Message:', backendMessage);
+      localStorage.setItem('errorMessage', backendMessage); // Store in localStorage if needed
+    }
+
     // Check if the error is due to an expired token
     if (
+      error.response &&
       error.response.status === 401 &&
       !originalRequest._retry // Prevent multiple retries
     ) {
@@ -44,7 +53,7 @@ API.interceptors.response.use(
       }
     }
 
-    return Promise.reject(error); // Reject other errors
+    return Promise.reject(error.response.data); // Reject other errors
   }
 );
 
